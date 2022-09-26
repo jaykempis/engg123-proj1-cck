@@ -76,7 +76,9 @@ void opAddition(unsigned rawline){
               cout << "PSEUDO sub R" << rd.to_ulong() <<
               " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   | ANS: ";
             }
-
+            //cout << rd.to_string() << endl;
+            //cout << R[rs1.to_ulong()] << endl;
+            //cout << R[rs2.to_ulong()] << endl;
             cout << R[rd.to_ulong()] << endl;
         break;
 
@@ -169,7 +171,8 @@ int main()
       int sfound = cmd.find(" ");
       string reg = cmd.substr(1, sfound);
       string val = cmd.substr(sfound +1);
-      cout<<"Changing register value of "<<reg<<endl;
+      cout<<"Changing register value of "<<reg <<endl;
+      R[stoi(reg)] = stoi(val);
       cout<<"Value: "<<val<<endl;
     }
   }
