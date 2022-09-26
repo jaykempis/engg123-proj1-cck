@@ -39,21 +39,54 @@ string fileopen (string filename, int n)
   }
   else cout<<"Unable to open file."<<endl;
 
-  stringstream ss;
-    ss << hex << line;
-    unsigned raw32;
-    ss >> raw32;
+  return line;
+}
 
-    bitset<32> b(raw32); //raw 32-bit line
-    string converted = b.to_string();
-    //cout << converted << endl;
+void opAddition(unsigned rawline){
+    //extraction
+    unsigned opcode = rawline & 0x0000007F; //extracted OP-code
+    unsigned r_dest = (rawline & 0x00000F80) >> 7; //extracted rd
+    unsigned funct_3 = (rawline & 0x00007000) >> 12; //extracted f3
+    unsigned r_src1 = (rawline & 0x000F8000) >> 15; //extracted rs1
+    unsigned r_src2 = (rawline & 0x01F00000) >> 20; //extracted rs1
+    unsigned funct_7 = (rawline & 0xFE000000) >> 25; //extracted rs1
 
-  return converted;
+    //fields
+    bitset<7> op(opcode);
+    bitset<5> rd(r_dest);
+    bitset<3> f3(funct_3);
+    bitset<5> rs1(r_src1);
+    bitset<5> rs2(r_src2);
+    bitset<7> f7(funct_7);
+
+    //storing values in memory
+    //R[rs1.to_ulong()] = 46;
+    //R[rs2.to_ulong()] = 23;
+
+    //sample orperation
+    switch(f3.to_ulong()){
+        case 0b000:
+            if(f7.to_ulong() == 0b0000000){
+                R[rd.to_ulong()] = R[rs1.to_ulong()] + R[rs2.to_ulong()];
+            }
+            else if(f7.to_ulong() == 0b0100000){
+                R[rd.to_ulong()] = R[rs1.to_ulong()] - R[rs2.to_ulong()];
+            }
+
+            cout << R[rd.to_ulong()] << endl;
+        break;
+
+        default:
+            cout << "error";
+        break;
+    }
+
+
 }
 
 
 int main()
-{
+{ 
   int n = 0;
   string filename, hextobin;
 
@@ -97,9 +130,32 @@ int main()
 
     else if (nxfound == 0)
     {
+      lineread = fileopen(filename, n);
       n++;
-      hextobin = fileopen(filename, n);
-      cout<<hextobin<<endl;
+
+      stringstream ss;
+      ss << hex << lineread;
+      unsigned raw32;
+      ss >> raw32;
+
+      bitset<32> b(raw32); //raw 32-bit line
+      cout << b.to_string() << endl; //output raw32
+
+      //extraction
+      unsigned opcode = n & 0x0000007F; //extracted OP-code
+
+      switch(opcode){
+         case 0b0110011:
+            opAddition(raw32);
+         break;
+
+         default:
+          cout << "error";
+         break;
+      }
+
+
+
     }
 
     else if (cmd.at(0) == 'R')
