@@ -39,17 +39,26 @@ string fileopen (string filename, int n)
   }
   else cout<<"Unable to open file."<<endl;
 
-  return line;
+  stringstream ss;
+    ss << hex << line;
+    unsigned raw32;
+    ss >> raw32;
+
+    bitset<32> b(raw32); //raw 32-bit line
+    string converted = b.to_string();
+    //cout << converted << endl;
+
+  return converted;
 }
 
 
 int main()
 {
   int n = 0;
-  string filename;
+  string filename, hextobin;
 
   do{
-    cout<<"[CMD] : ";
+    cout<<"\n[CMD] : ";
     getline(cin, cmd);
     //cout<<cmd<<endl;
     size_t ffound = cmd.find("file");
@@ -82,21 +91,15 @@ int main()
         }
       }
       cout<<"Opening file: "<<filename<<endl;
-      lineread = fileopen(filename, n);
-      cout << lineread << endl;
+      hextobin = fileopen(filename, n);
+      cout<<hextobin<<endl;
     }
 
     else if (nxfound == 0)
     {
       n++;
-      stringstream ss;  
-      ss << hex << lineread;
-      unsigned raw32;
-      ss >> raw32;
-
-      bitset<32> b(raw32); //raw 32-bit line
-      cout << b.to_string() << endl;
-
+      hextobin = fileopen(filename, n);
+      cout<<hextobin<<endl;
     }
 
     else if (cmd.at(0) == 'R')
@@ -107,11 +110,6 @@ int main()
       cout<<"Changing register value of "<<reg<<endl;
       cout<<"Value: "<<val<<endl;
     }
-
-    /*else if (r2found == 0)
-    {
-      cout<<"Changing register 2 value"<<endl;
-    }*/
   }
   while (cmd != "exit");
   return 0;
