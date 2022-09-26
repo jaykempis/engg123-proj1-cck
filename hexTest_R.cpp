@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     long long int reg[64];
-    string s = "0x007302B3";
+    string s = "0x007372B3";
     stringstream ss;  
 
     ss << hex << s;
@@ -55,7 +55,16 @@ int main()
             else if(f7.to_ulong() == 0b0100000){
                 reg[rd.to_ulong()] = reg[rs1.to_ulong()] - reg[rs2.to_ulong()];
             }
+            cout << reg[rd.to_ulong()] << endl;
+        break;
 
+        case 0b110:
+            reg[rd.to_ulong()] = reg[rs1.to_ulong()] | reg[rs2.to_ulong()];
+            cout << reg[rd.to_ulong()] << endl;
+        break;
+        
+        case 0b111:
+            reg[rd.to_ulong()] = reg[rs1.to_ulong()] & reg[rs2.to_ulong()];
             cout << reg[rd.to_ulong()] << endl;
         break;
 
