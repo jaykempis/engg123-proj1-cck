@@ -147,6 +147,8 @@ int main()
 
       //extraction
       unsigned opcode = n & 0x0000007F; //extracted OP-code
+      bitset<7> op(opcode);
+      cout << op.to_string() << endl;
 
       switch(opcode){
          case 0b0110011:
