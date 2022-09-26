@@ -42,7 +42,7 @@ string fileopen (string filename, int n)
   return line;
 }
 
-void opAddition(unsigned rawline){
+void opR(unsigned rawline){
     //extraction
     unsigned opcode = rawline & 0x0000007F; //extracted OP-code
     unsigned r_dest = (rawline & 0x00000F80) >> 7; //extracted rd
@@ -65,13 +65,13 @@ void opAddition(unsigned rawline){
 
     //sample orperation
     switch(f3.to_ulong()){
-        case 0b000:
-            if(f7.to_ulong() == 0b0000000){
+        case 0b000: //add or sub
+            if(f7.to_ulong() == 0b0000000){  //add
               R[rd.to_ulong()] = R[rs1.to_ulong()] + R[rs2.to_ulong()];
               cout << "PSEUDO add R" << rd.to_ulong() <<
               " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   | ANS: ";
             }
-            else if(f7.to_ulong() == 0b0100000){
+            else if(f7.to_ulong() == 0b0100000){ //sub
               R[rd.to_ulong()] = R[rs1.to_ulong()] - R[rs2.to_ulong()];
               cout << "PSEUDO sub R" << rd.to_ulong() <<
               " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   | ANS: ";
@@ -79,6 +79,20 @@ void opAddition(unsigned rawline){
             //cout << rd.to_string() << endl;
             //cout << R[rs1.to_ulong()] << endl;
             //cout << R[rs2.to_ulong()] << endl;
+            cout << R[rd.to_ulong()] << endl;
+        break;
+
+        case 0b110: //bitwise OR
+          R[rd.to_ulong()] = R[rs1.to_ulong()] | R[rs2.to_ulong()];
+          cout << "PSEUDO add R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   | ANS: ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
+
+        case 0b111: //bitwise AND
+          R[rd.to_ulong()] = R[rs1.to_ulong()] & R[rs2.to_ulong()];
+          cout << "PSEUDO add R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   | ANS: ";
             cout << R[rd.to_ulong()] << endl;
         break;
 
@@ -154,7 +168,7 @@ int main()
 
       switch(op.to_ulong()){
          case 0b0110011:
-            opAddition(raw32);
+            opR(raw32);
          break;
 
          default:
