@@ -1,6 +1,7 @@
 #include <iostream>
-
 using namespace std;
+
+
 
 //function to convert hexadecimal to binary
 void ConvertHexToBin(string hex_input)
