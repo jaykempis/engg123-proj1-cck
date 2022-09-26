@@ -16,7 +16,7 @@ void helpCMD ()
   cout<<"\nLists of possible commands: \n"
       <<"* help            - displays the lists of commands \n"
       <<"* Rn [value]      - set value of a register\n"
-      <<"* file [filename] - ope    ns the RISC-V instruction file\n"
+      <<"* file [filename] - opens the RISC-V instruction file\n"
       <<"* next            - instructs the program to read the "
       <<"next command in the file\n"
       <<"* exit            - closes the program"<<endl;
