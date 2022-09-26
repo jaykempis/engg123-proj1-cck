@@ -1,3 +1,11 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <fstream>
+
+using namespace std;
+//--------------------------------------------------------------------
+
 string cmd;
 int R[32]; //registers 1 to 31
 
