@@ -9,7 +9,7 @@ int main()
 {
     long long int reg[64];
     string s = "0x007302B3";
-    stringstream ss;
+    stringstream ss;  
 
     ss << hex << s;
     unsigned n;
