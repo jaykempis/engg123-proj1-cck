@@ -1,13 +1,5 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <fstream>
-
-using namespace std;
-//--------------------------------------------------------------------
-
 string cmd;
-int R1, R2, RD;
+int R[32]; //registers 1 to 31
 
 void helpCMD ()
 {
@@ -38,74 +30,6 @@ void fileopen (string filename, int n)
   else cout<<"Unable to open file."<<endl;
 }
 
-void ConvertHexToBin(string hex_input)
-{
-  long int i = 0;
-
-  while (hex_input[i])
-  {
-    switch (hex_input[i])
-    {
-      case '0':
-        cout << "0000";
-          break;
-      case '1':
-        cout << "0001";
-          break;
-      case '2':
-        cout << "0010";
-          break;
-      case '3':
-        cout << "0011";
-          break;
-      case '4':
-        cout << "0100";
-          break;
-      case '5':
-        cout << "0101";
-          break;
-      case '6':
-        cout << "0110";
-          break;
-      case '7':
-        cout << "0111";
-          break;
-      case '8':
-        cout << "1000";
-          break;
-      case '9':
-        cout << "1001";
-          break;
-      case 'A':
-      case 'a':
-        cout << "1010";
-          break;
-      case 'B':
-      case 'b':
-        cout << "1011";
-          break;
-      case 'C':
-      case 'c':
-        cout << "1100";
-          break;
-      case 'D':
-      case 'd':
-        cout << "1101";
-          break;
-      case 'E':
-      case 'e':
-        cout << "1110";
-          break;
-      case 'F':
-      case 'f':
-        cout << "1111";
-          break;
-      default:
-        cout << "\nInvalid hexadecimal value " << hex_input[i];
-    }
-    i++;
-  }
-}
 
 int main()
 {
@@ -118,8 +42,6 @@ int main()
     //cout<<cmd<<endl;
     size_t ffound = cmd.find("file");
     size_t nxfound = cmd.find("next");
-    size_t r1found = cmd.find("R1");
-    size_t r2found = cmd.find("R2");
     //cout<<"ffound = "<<ffound<<endl;
     //cout<<"rfound = "<<rfound<<endl;
     if (cmd == "help")
@@ -157,15 +79,19 @@ int main()
       fileopen(filename, n);
     }
 
-    else if (r1found == 0)
+    else if (cmd.at(0) == 'R')
     {
-      cout<<"Changing register 1 value"<<endl;
+      int sfound = cmd.find(" ");
+      string reg = cmd.substr(1, sfound);
+      string val = cmd.substr(sfound +1);
+      cout<<"Changing register value of "<<reg<<endl;
+      cout<<"Value: "<<val<<endl;
     }
 
-    else if (r2found == 0)
+    /*else if (r2found == 0)
     {
       cout<<"Changing register 2 value"<<endl;
-    }
+    }*/
   }
   while (cmd != "exit");
   return 0;
