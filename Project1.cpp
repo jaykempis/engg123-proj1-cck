@@ -146,7 +146,7 @@ int main()
       cout << b.to_string() << endl; //output raw32
 
       //extraction
-      unsigned opcode = n & 0x0000007F; //extracted OP-code
+      unsigned opcode = raw32 & 0x0000007F; //extracted OP-code
       bitset<7> op(opcode);
       cout << op.to_string() << endl;
 
