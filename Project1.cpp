@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <bitset>
 
 using namespace std;
 //--------------------------------------------------------------------
@@ -20,7 +21,7 @@ void helpCMD ()
       <<"* exit            - closes the program"<<endl;
 }
 
-void fileopen (string filename, int n)
+string fileopen (string filename, int n)
 {
   string line;
   line.clear();
@@ -36,6 +37,8 @@ void fileopen (string filename, int n)
     //cout<<"Done\n";
   }
   else cout<<"Unable to open file."<<endl;
+
+  return line;
 }
 
 
@@ -84,7 +87,15 @@ int main()
     else if (nxfound == 0)
     {
       n++;
-      fileopen(filename, n);
+      string lineread = fileopen(filename, n);
+      stringstream ss;  
+      ss << hex << lineread;
+      unsigned raw32;
+      ss >> raw32;
+
+      bitset<32> b(raw32); //raw 32-bit line
+      cout << b.to_string() << endl;
+
     }
 
     else if (cmd.at(0) == 'R')
