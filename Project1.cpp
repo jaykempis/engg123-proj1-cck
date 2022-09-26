@@ -8,6 +8,7 @@ using namespace std;
 //--------------------------------------------------------------------
 
 string cmd;
+string lineread;
 int R[32]; //registers 1 to 31
 
 void helpCMD ()
@@ -81,13 +82,13 @@ int main()
         }
       }
       cout<<"Opening file: "<<filename<<endl;
-      fileopen(filename, n);
+      lineread = fileopen(filename, n);
+      cout << lineread << endl;
     }
 
     else if (nxfound == 0)
     {
       n++;
-      string lineread = fileopen(filename, n);
       stringstream ss;  
       ss << hex << lineread;
       unsigned raw32;
