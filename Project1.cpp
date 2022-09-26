@@ -67,10 +67,14 @@ void opAddition(unsigned rawline){
     switch(f3.to_ulong()){
         case 0b000:
             if(f7.to_ulong() == 0b0000000){
-                R[rd.to_ulong()] = R[rs1.to_ulong()] + R[rs2.to_ulong()];
+              R[rd.to_ulong()] = R[rs1.to_ulong()] + R[rs2.to_ulong()];
+              cout << "PSEUDO add R" << rd.to_ulong() <<
+              " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   | ANS: ";
             }
             else if(f7.to_ulong() == 0b0100000){
-                R[rd.to_ulong()] = R[rs1.to_ulong()] - R[rs2.to_ulong()];
+              R[rd.to_ulong()] = R[rs1.to_ulong()] - R[rs2.to_ulong()];
+              cout << "PSEUDO sub R" << rd.to_ulong() <<
+              " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   | ANS: ";
             }
 
             cout << R[rd.to_ulong()] << endl;
