@@ -150,7 +150,7 @@ int main()
       bitset<7> op(opcode);
       cout << op.to_string() << endl;
 
-      switch(opcode){
+      switch(op.to_ulong()){
          case 0b0110011:
             opAddition(raw32);
          break;
