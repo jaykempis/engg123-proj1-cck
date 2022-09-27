@@ -1,7 +1,6 @@
 //ENGG 123.01
 //Project 1: Interactive Basic RISC V Simulator
 //by: Iris Carson, Antonio Castro, and Joshua Kempis
-
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -47,75 +46,70 @@ string fileopen (string filename, int n)
 }
 
 void opR(unsigned rawline){
-  //extraction
-  unsigned opcode = rawline & 0x0000007F; //extracted OP-code
-  unsigned r_dest = (rawline & 0x00000F80) >> 7; //extracted rd
-  unsigned funct_3 = (rawline & 0x00007000) >> 12; //extracted f3
-  unsigned r_src1 = (rawline & 0x000F8000) >> 15; //extracted rs1
-  unsigned r_src2 = (rawline & 0x01F00000) >> 20; //extracted rs1
-  unsigned funct_7 = (rawline & 0xFE000000) >> 25; //extracted rs1
+    //extraction
+    unsigned opcode = rawline & 0x0000007F; //extracted OP-code
+    unsigned r_dest = (rawline & 0x00000F80) >> 7; //extracted rd
+    unsigned funct_3 = (rawline & 0x00007000) >> 12; //extracted f3
+    unsigned r_src1 = (rawline & 0x000F8000) >> 15; //extracted rs1
+    unsigned r_src2 = (rawline & 0x01F00000) >> 20; //extracted rs1
+    unsigned funct_7 = (rawline & 0xFE000000) >> 25; //extracted rs1
 
-  //fields
-  bitset<7> op(opcode);
-  bitset<5> rd(r_dest);
-  bitset<3> f3(funct_3);
-  bitset<5> rs1(r_src1);
-  bitset<5> rs2(r_src2);
-  bitset<7> f7(funct_7);
+    //fields
+    bitset<7> op(opcode);
+    bitset<5> rd(r_dest);
+    bitset<3> f3(funct_3);
+    bitset<5> rs1(r_src1);
+    bitset<5> rs2(r_src2);
+    bitset<7> f7(funct_7);
 
-  //storing values in memory
-  //R[rs1.to_ulong()] = 46;
-  //R[rs2.to_ulong()] = 23;
+    //storing values in memory
+    //R[rs1.to_ulong()] = 46;
+    //R[rs2.to_ulong()] = 23;
 
-  //sample orperation
-  switch(f3.to_ulong())
-  {
-    case 0b000: //add or sub
-      if(f7.to_ulong() == 0b0000000)
-      {  //add
-        R[rd.to_ulong()] = R[rs1.to_ulong()] + R[rs2.to_ulong()];
-        cout << "PSEUDO add R" << rd.to_ulong()
-             << " , R" <<rs1.to_ulong() << " , R"
-             << rs2.to_ulong() << "   | ANS: ";
-      }
-      else if(f7.to_ulong() == 0b0100000)
-      { //sub
-        R[rd.to_ulong()] = R[rs1.to_ulong()] - R[rs2.to_ulong()];
-        cout << "PSEUDO sub R" << rd.to_ulong()
-             << " , R" <<rs1.to_ulong() << " , R"
-             << rs2.to_ulong() << "   | ANS: ";
-      }
-      //cout << rd.to_string() << endl;
-      //cout << R[rs1.to_ulong()] << endl;
-      //cout << R[rs2.to_ulong()] << endl;
-      cout << R[rd.to_ulong()] << endl;
-    break;
+    //sample orperation
+    switch(f3.to_ulong()){
+        case 0b000: //add or sub
+            if(f7.to_ulong() == 0b0000000){  //add
+              R[rd.to_ulong()] = R[rs1.to_ulong()] + R[rs2.to_ulong()];
+              cout << "PSEUDO add R" << rd.to_ulong() <<
+              " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   |   R" << rd.to_ulong() << ": ";
+            }
+            else if(f7.to_ulong() == 0b0100000){ //sub
+              R[rd.to_ulong()] = R[rs1.to_ulong()] - R[rs2.to_ulong()];
+              cout << "PSEUDO sub R" << rd.to_ulong() <<
+              " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   |   R" << rd.to_ulong() << ": ";
+            }
+            //cout << rd.to_string() << endl;
+            //cout << R[rs1.to_ulong()] << endl;
+            //cout << R[rs2.to_ulong()] << endl;
+            cout << R[rd.to_ulong()] << endl;
+        break;
 
-    case 0b110: //bitwise OR
-      R[rd.to_ulong()] = R[rs1.to_ulong()] | R[rs2.to_ulong()];
-      cout << "PSEUDO add R" << rd.to_ulong()
-           << " , R" <<rs1.to_ulong() << " , R"
-           << rs2.to_ulong() << "   | ANS: ";
-      cout << R[rd.to_ulong()] << endl;
-    break;
+        case 0b110: //bitwise OR
+          R[rd.to_ulong()] = R[rs1.to_ulong()] | R[rs2.to_ulong()];
+          cout << "PSEUDO or R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
 
-    case 0b111: //bitwise AND
-      R[rd.to_ulong()] = R[rs1.to_ulong()] & R[rs2.to_ulong()];
-      cout << "PSEUDO add R" << rd.to_ulong()
-           << " , R" <<rs1.to_ulong() << " , R"
-           << rs2.to_ulong() << "   | ANS: ";
-      cout << R[rd.to_ulong()] << endl;
-    break;
+        case 0b111: //bitwise AND
+          R[rd.to_ulong()] = R[rs1.to_ulong()] & R[rs2.to_ulong()];
+          cout << "PSEUDO and R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong() << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
 
-    default:
-      cout << "error";
-    break;
-  }
+        default:
+            cout << "error";
+        break;
+    }
+
+
 }
 
 
 int main()
-{
+{ 
   int n = 0;
   string filename, hextobin;
 
@@ -175,16 +169,18 @@ int main()
       bitset<7> op(opcode);
       cout << op.to_string() << endl;
 
-      switch(op.to_ulong())
-      {
-        case 0b0110011:
-          opR(raw32);
-        break;
+      switch(op.to_ulong()){
+         case 0b0110011:
+            opR(raw32);
+         break;
 
-        default:
+         default:
           cout << "error";
-        break;
+         break;
       }
+
+
+
     }
 
     else if (cmd.at(0) == 'R')
@@ -192,9 +188,9 @@ int main()
       int sfound = cmd.find(" ");
       string reg = cmd.substr(1, sfound);
       string val = cmd.substr(sfound +1);
-      cout<<"Changing register value of "<<reg <<endl;
+      cout<<"Changing register value of R"<<reg <<endl;
       R[stoi(reg)] = stoi(val);
-      cout<<"Value: "<<val<<endl;
+      cout<< "R" << reg << ": " << val <<endl;
     }
   }
   while (cmd != "exit");
