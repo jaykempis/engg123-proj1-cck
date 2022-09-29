@@ -15,7 +15,7 @@ void helpCMD ()
   cout<<"\nLists of possible commands: \n"
       <<"* help            - displays the lists of commands \n"
       <<"* show            - displays the current values stored "
-      <<"in registers"
+      <<"in registers\n"
       <<"* Rn [value]      - set value of a register\n"
       <<"* file [filename] - opens the RISC-V instruction file\n"
       <<"* next            - instructs the program to read the "
@@ -59,20 +59,12 @@ void opI(unsigned rawLine, long long int R[])
   bitset<5> rs1(r_src1);
   bitset<12> imm(immediate);
 
-  //outputs
-  cout << op.to_string() << endl;
-  cout << rd.to_string() << endl;
-  cout << f3.to_string() << endl;
-  cout << rs1.to_string() << endl;
-  cout << imm.to_string() << endl;
-
   //converting signed 12-bit to long
   //interprets the unsigned 12-bit bitset into a signed value
   int16_t x_imm = (int16_t)(imm.to_ulong() & 0xFFF) << 4;
 
   //16-bit set then converts it from bitset to long
   x_imm = x_imm >> 4;
-  cout << "x_imm: " << x_imm << endl;
 
   //bitset for immediate shift
   bitset<5> shift_imm(x_imm); 
@@ -340,7 +332,8 @@ int main()
       cout << "Exiting..." << endl;
     }
 
-    else cout<<"Invalid Command."<<endl;
+    else cout<<"Invalid Command. " <<  
+      "Type 'help' for a list of commands."<<endl;
   }
   while (cmd != "exit");
   return 0;
