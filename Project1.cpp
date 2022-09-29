@@ -42,6 +42,7 @@ string fileopen (string filename, int n)
   return line;
 }
 
+//Function for I-type Instructions
 void opI(unsigned rawLine, long long int R[])
 {
   //extraciton of fields
@@ -144,6 +145,7 @@ void opI(unsigned rawLine, long long int R[])
   }
 }
 
+//Function for R-type Instructions
 void opR(unsigned rawline, long long int R[])
 {
   //extraction
