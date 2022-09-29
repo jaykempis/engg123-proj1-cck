@@ -8,7 +8,6 @@ using namespace std;
 //--------------------------------------------------------------------
 
 string cmd;
-string lineread;
 int R[32]; //registers 1 to 31
 
 void helpCMD ()
@@ -41,6 +40,55 @@ string fileopen (string filename, int n)
 
   return line;
 }
+
+void opI(unsigned rawLine){
+  //extraciton of fields
+  unsigned opcode = rawLine & 0x0000007F; //extracted OP-code
+  unsigned r_dest = (rawLine & 0x00000F80) >> 7; //extracted rd
+  unsigned funct_3 = (rawLine & 0x00007000) >> 12; //extracted f3
+  unsigned r_src1 = (rawLine & 0x000F8000) >> 15; //extracted rs1
+  unsigned immediate = (rawLine & 0xFFF00000) >> 20; //extracted imm
+
+  //fields
+  bitset<7> op(opcode);
+  bitset<5> rd(r_dest);
+  bitset<3> f3(funct_3);
+  bitset<5> rs1(r_src1);
+  bitset<12> imm(immediate);
+
+  //outputs
+  cout << op.to_string() << endl;
+  cout << rd.to_string() << endl;
+  cout << f3.to_string() << endl;
+  cout << rs1.to_string() << endl;
+  cout << imm.to_string() << endl;
+
+  //storing values in memory
+  //reg[rs1.to_ulong()] = 46;
+
+  //converting signed 12-bit to long
+    int16_t x_imm = (int16_t)(imm.to_ulong() & 0xFFF) << 4; //interprets the unsigned 12-bit bitset into a signed
+    x_imm = x_imm >> 4;                                     //16-bit set then converts it from bitset to long
+    //bitset<12> test_imm(x_imm);                             //the long is currently 16 bits long therefore we shift-right
+    //cout << test_imm.to_string() << endl;                   //to extract the signed 12-bit from the signed 16-bit
+
+    //sample orperation
+    switch(f3.to_ulong()){
+        case 0b000: //ADD I
+            //cout << "Immediate Signed Value: " << x_imm << endl;
+            R[rd.to_ulong()] = R[rs1.to_ulong()] + x_imm;
+            cout << "PSEUDO addi R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
+
+        default:
+            cout << "error";
+        break;
+    }
+
+}
+
 
 void opR(unsigned rawline){
     //extraction
@@ -164,6 +212,7 @@ int main()
 
     else if (nxfound == 0)
     {
+      string lineread;
       lineread = fileopen(filename, n);
       n++;
 
@@ -183,6 +232,9 @@ int main()
       switch(op.to_ulong()){
          case 0b0110011:
             opR(raw32);
+         break;
+         case 0b0010011:
+            opI(raw32);
          break;
 
          default:
