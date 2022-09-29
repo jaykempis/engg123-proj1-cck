@@ -103,7 +103,7 @@ void opI(unsigned rawLine, long long int R[])
       cout << R[rd.to_ulong()] << endl;
     break;
 
-    case 0b11: //AND I
+    case 0b111: //AND I
       R[rd.to_ulong()] = R[rs1.to_ulong()] & x_imm;
       cout << "PSEUDO andi R" << rd.to_ulong()
            << " , R" <<rs1.to_ulong() << " , "
@@ -113,7 +113,6 @@ void opI(unsigned rawLine, long long int R[])
 
     case 0b001: //SHIFT LEFT LOGICAL IMMEDIATE
       //use only lower 5 bits of imm
-      cout << "Shift: " << shift_imm.to_string() << endl;
       R[rd.to_ulong()] = R[rs1.to_ulong()] << shift_imm.to_ulong();
       cout << "PSEUDO slli R" << rd.to_ulong()
            << " , R" <<rs1.to_ulong() << " , "
@@ -123,7 +122,6 @@ void opI(unsigned rawLine, long long int R[])
 
     case 0b101: //SHIFT RIGHT LOGICAL  IMMEDIATE
       //use only lower 5 bits of imm
-      cout << "Shift: " << shift_imm.to_string() << endl;
       R[rd.to_ulong()] = R[rs1.to_ulong()] >> shift_imm.to_ulong();
       cout << "PSEUDO srli R" << rd.to_ulong()
            << " , R" <<rs1.to_ulong() << " , "
@@ -265,7 +263,6 @@ int main()
       }
       cout<<"Opening file: "<<filename<<endl;
       hextobin = fileopen(filename, n);
-      cout<<hextobin<<endl;
     }
 
     else if (nxfound == 0)
