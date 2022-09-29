@@ -36,17 +36,17 @@ string fileopen (string filename, int n)
     }
     cout << "Reading Line "<<n<<":"<<line<< endl;
     file.close();
+    //cout<<"Done\n";
   }
   else cout<<"Unable to open file."<<endl;
 
   return line;
 }
 
-//Function for I-type Instructions
 void opI(unsigned rawLine, long long int R[])
 {
   //extraciton of fields
-  unsigned opcode=rawLine&0x0000007F; //extracted OP-code
+  unsigned opcode=rawLine&0x0000007F;//extracted OP-code
   unsigned r_dest=(rawLine&0x00000F80)>> 7; //extracted rd
   unsigned funct_3=(rawLine&0x00007000)>> 12; //extracted f3
   unsigned r_src1=(rawLine&0x000F8000)>> 15; //extracted rs1
@@ -60,27 +60,31 @@ void opI(unsigned rawLine, long long int R[])
   bitset<12> imm(immediate);
 
   //outputs
-  cout << op.to_string() << endl;
-  cout << rd.to_string() << endl;
-  cout << f3.to_string() << endl;
-  cout << rs1.to_string() << endl;
-  cout << imm.to_string() << endl;
+  //cout << op.to_string() << endl;
+  //cout << rd.to_string() << endl;
+  //cout << f3.to_string() << endl;
+  //cout << rs1.to_string() << endl;
+  //cout << imm.to_string() << endl;
+
+  //storing values in memory
+  //reg[rs1.to_ulong()] = 46;
 
   //converting signed 12-bit to long
-  //interprets the unsigned 12-bit bitset into a signed value
-  int16_t x_imm = (int16_t)(imm.to_ulong() & 0xFFF) << 4;
+  int16_t x_imm = (int16_t)(imm.to_ulong() & 0xFFF) << 4; //interprets
+                            //the unsigned 12-bit bitset into a signed
 
-  //16-bit set then converts it from bitset to long
-  x_imm = x_imm >> 4;
+  x_imm = x_imm >> 4;//16-bit set then converts it from bitset to long
   cout << "x_imm: " << x_imm << endl;
-
-  //bitset for immediate shift
-  bitset<5> shift_imm(x_imm); 
+  bitset<5> shift_imm(x_imm); //the long is currently 16 bits long
+                              //therefore we shift-right
+  //cout << test_imm.to_string() << endl; //to extract the signed
+                                       //12-bit from the signed 16-bit
 
   //sample orperation
   switch(f3.to_ulong())
   {
     case 0b000: //ADD I
+      //cout << "Immediate Signed Value: " << x_imm << endl;
       R[rd.to_ulong()] = R[rs1.to_ulong()] + x_imm;
       cout << "PSEUDO addi R" << rd.to_ulong()
            << " , R" <<rs1.to_ulong() << " , "
@@ -119,9 +123,9 @@ void opI(unsigned rawLine, long long int R[])
       cout << R[rd.to_ulong()] << endl;
     break;
 
-    case 0b001: //SHIFT LEFT LOGICAL IMMEDIATE
-      //use only lower 5 bits of imm
-      cout << "Shift: " << shift_imm.to_string() << endl;
+    case 0b001: //SHIFT LOGICAL LEFT IMMIDIATE
+      cout << "Shift: " << shift_imm.to_string() << endl; //use only
+                                                //lower 5 bits of imm
       R[rd.to_ulong()] = R[rs1.to_ulong()] << shift_imm.to_ulong();
       cout << "PSEUDO slli R" << rd.to_ulong()
            << " , R" <<rs1.to_ulong() << " , "
@@ -129,9 +133,9 @@ void opI(unsigned rawLine, long long int R[])
       cout << R[rd.to_ulong()] << endl;
     break;
 
-    case 0b101: //SHIFT RIGHT LOGICAL  IMMEDIATE
-      //use only lower 5 bits of imm
-      cout << "Shift: " << shift_imm.to_string() << endl;
+    case 0b101: //SHIFT LOGICAL RIGHT IMMIDIATE
+      cout << "Shift: " << shift_imm.to_string() << endl; //use only
+                                                //lower 5 bits of imm
       R[rd.to_ulong()] = R[rs1.to_ulong()] >> shift_imm.to_ulong();
       cout << "PSEUDO srli R" << rd.to_ulong()
            << " , R" <<rs1.to_ulong() << " , "
@@ -145,7 +149,6 @@ void opI(unsigned rawLine, long long int R[])
   }
 }
 
-//Function for R-type Instructions
 void opR(unsigned rawline, long long int R[])
 {
   //extraction
@@ -164,24 +167,31 @@ void opR(unsigned rawline, long long int R[])
   bitset<5> rs2(r_src2);
   bitset<7> f7(funct_7);
 
+  //storing values in memory
+  //R[rs1.to_ulong()] = 46;
+  //R[rs2.to_ulong()] = 23;
+
   //sample orperation
   switch(f3.to_ulong())
   {
     case 0b000: //add or sub
-      if(f7.to_ulong() == 0b0000000) //ADD
-      { 
+      if(f7.to_ulong() == 0b0000000)
+      {  //add
         R[rd.to_ulong()] = R[rs1.to_ulong()] + R[rs2.to_ulong()];
         cout << "PSEUDO add R" << rd.to_ulong()
              << " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong()
              << "   |   R" << rd.to_ulong() << ": ";
       }
-      else if(f7.to_ulong() == 0b0100000) //SUB
-      { 
+      else if(f7.to_ulong() == 0b0100000)
+      { //sub
         R[rd.to_ulong()] = R[rs1.to_ulong()] - R[rs2.to_ulong()];
         cout << "PSEUDO sub R" << rd.to_ulong()
              << " , R" <<rs1.to_ulong() << " , R" << rs2.to_ulong()
              << "   |   R" << rd.to_ulong() << ": ";
       }
+      //cout << rd.to_string() << endl;
+      //cout << R[rs1.to_ulong()] << endl;
+      //cout << R[rs2.to_ulong()] << endl;
       cout << R[rd.to_ulong()] << endl;
     break;
 
@@ -201,7 +211,7 @@ void opR(unsigned rawline, long long int R[])
       cout << R[rd.to_ulong()] << endl;
     break;
 
-    case 0b001: //SHIFT LEFT LOGICAL
+    case 0b001:
       R[rd.to_ulong()] = R[rs1.to_ulong()] << rs2.to_ulong();
       cout << "PSEUDO Shift Left Logical sll R" << rd.to_ulong()
            << " , R" << rs1.to_ulong() << " , x" << rs2.to_ulong()
@@ -209,7 +219,7 @@ void opR(unsigned rawline, long long int R[])
       cout << R[rd.to_ulong()] << endl;
     break;
 
-    case 0b101: //SHIFT RIGHT LOGICAL
+    case 0b101:
       R[rd.to_ulong()] = R[rs1.to_ulong()] >> rs2.to_ulong();
       cout << "PSEUDO Shift Right Logical srl R" << rd.to_ulong()
            <<" , R" << rs1.to_ulong() << " , x" << rs2.to_ulong()
@@ -223,7 +233,6 @@ void opR(unsigned rawline, long long int R[])
   }
 }
 
-//Function to Show values in all registers
 void show(long long int reg[32])
 {
   int c = 0;
@@ -236,7 +245,6 @@ void show(long long int reg[32])
   }
 }
 
-
 int main()
 {
   int n = 0;
@@ -246,8 +254,11 @@ int main()
   do{
     cout<<"\n[CMD] : ";
     getline(cin, cmd);
+    //cout<<cmd<<endl;
     size_t ffound = cmd.find("file");
     size_t nxfound = cmd.find("next");
+    //cout<<"ffound = "<<ffound<<endl;
+    //cout<<"rfound = "<<rfound<<endl;
     if (cmd == "help")
     {
       helpCMD();
@@ -268,12 +279,14 @@ int main()
         }
         else
         {
+          //cout<<word<<endl;
           filename = filename + word + ' ';
+          //cout<<filename<<endl;
         }
       }
       cout<<"Opening file: "<<filename<<endl;
       hextobin = fileopen(filename, n);
-      cout<<hextobin<<endl;
+      cout<<"Openning File : Successful"<<endl;
     }
 
     else if (nxfound == 0)
@@ -311,21 +324,22 @@ int main()
 
     else if (cmd.at(0) == 'R')
     {
-      int x;
+      int s, x;
       int sfound = cmd.find(" ");
       string reg = cmd.substr(1, sfound);
       string val = cmd.substr(sfound +1);
       cout<<"Changing register value of R"<<reg<<endl;
 
-      stringstream ss;
-      ss<<val;
+      stringstream ss, sx;
+      ss<<reg;
+      sx<<val;
 
-      if (ss>>x)
+      if (ss>>s && sx>>x)
       {
-        R[stoi(reg)-1] = x;
+        R[s - 1] = x;
         cout<< "R" << reg << ": " << x <<endl;
       }
-      else cout<<"Invalid register value."<<endl;
+      else cout<<"Invalid register/value input."<<endl;
     }
 
     else if (cmd == "show")
