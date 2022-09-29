@@ -338,7 +338,7 @@ int main()
       if (ss>>s && sx>>x)
       {
         R[s] = x;
-        cout<< "R" << reg << ": " << x <<endl;
+        cout<< "R" << s << ": " << x <<endl;
       }
       else cout<<"Invalid register/value input."<<endl;
     }
