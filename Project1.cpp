@@ -239,8 +239,8 @@ void show(long long int reg[32])
   cout<<"\t>> Current Values in Registers <<"<<endl;
   while(c < 16)
   {
-    cout<<"R"<<c+1<<"\t=\t"<<reg[c]<<"\t | \t";
-    cout<<"R"<<c+17<<"\t=\t"<<reg[c+16]<<endl;
+    cout<<"R"<<c<<"\t=\t"<<reg[c]<<"\t | \t";
+    cout<<"R"<<c+16<<"\t=\t"<<reg[c+16]<<endl;
     c++;
   }
 }
@@ -324,7 +324,8 @@ int main()
 
     else if (cmd.at(0) == 'R')
     {
-      int s, x;
+      int s;
+      long long int x;
       int sfound = cmd.find(" ");
       string reg = cmd.substr(1, sfound);
       string val = cmd.substr(sfound +1);
@@ -336,7 +337,7 @@ int main()
 
       if (ss>>s && sx>>x)
       {
-        R[s - 1] = x;
+        R[s] = x;
         cout<< "R" << reg << ": " << x <<endl;
       }
       else cout<<"Invalid register/value input."<<endl;
