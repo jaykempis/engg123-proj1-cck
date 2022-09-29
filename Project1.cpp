@@ -7,8 +7,7 @@
 using namespace std;
 //--------------------------------------------------------------------
 
-string cmd;
-int R[32]; //registers 1 to 31
+//long long int R[32]; //registers 1 to 31
 
 void helpCMD ()
 {
@@ -41,7 +40,7 @@ string fileopen (string filename, int n)
   return line;
 }
 
-void opI(unsigned rawLine){
+void opI(unsigned rawLine, long long int R[]){
   //extraciton of fields
   unsigned opcode = rawLine & 0x0000007F; //extracted OP-code
   unsigned r_dest = (rawLine & 0x00000F80) >> 7; //extracted rd
@@ -90,7 +89,7 @@ void opI(unsigned rawLine){
 }
 
 
-void opR(unsigned rawline){
+void opR(unsigned rawline, long long int R[]){
     //extraction
     unsigned opcode = rawline & 0x0000007F; //extracted OP-code
     unsigned r_dest = (rawline & 0x00000F80) >> 7; //extracted rd
@@ -170,7 +169,8 @@ void opR(unsigned rawline){
 int main()
 { 
   int n = 0;
-  string filename, hextobin;
+  string filename, hextobin, cmd;
+  long long int R[32]; //registers 1 to 31
 
   do{
     cout<<"\n[CMD] : ";
@@ -231,10 +231,10 @@ int main()
 
       switch(op.to_ulong()){
          case 0b0110011:
-            opR(raw32);
+            opR(raw32, R);
          break;
          case 0b0010011:
-            opI(raw32);
+            opI(raw32, R);
          break;
 
          default:
