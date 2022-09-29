@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     long long int reg[64];
-    string s = "0xFCE08793";
+    string s = "0xFCE08793"; //)xFCE is hex for -50
     stringstream ss;  
 
     ss << hex << s;
@@ -41,10 +41,12 @@ int main()
 
     //storing values in memory
     reg[rs1.to_ulong()] = 46;
-    int16_t x_imm = (int16_t)(imm.to_ulong() & 0xFFF) << 4;
-    x_imm = x_imm >> 4;
-    bitset<12> test_imm(x_imm);
-    cout << test_imm.to_string() << endl;
+
+    //converting signed 12-bit to long
+    int16_t x_imm = (int16_t)(imm.to_ulong() & 0xFFF) << 4; //interprets the unsigned 12-bit bitset into a signed
+    x_imm = x_imm >> 4;                                     //16-bit set then converts it from bitset to long
+    bitset<12> test_imm(x_imm);                             //the long is currently 16 bits long therefore we shift-right
+    cout << test_imm.to_string() << endl;                   //to extract the signed 12-bit from the signed 16-bit
 
     //sample orperation
     switch(f3.to_ulong()){
