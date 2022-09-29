@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     long long int reg[64];
-    string s = "0xFCE08793"; //)xFCE is hex
+    string s = "0xFCE0E793"; //)xFCE is hex
     stringstream ss;  
 
     ss << hex << s;
@@ -57,7 +57,27 @@ int main()
           " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
             cout << reg[rd.to_ulong()] << endl;
         break;
-
+        case 0b010: //SLTI
+            if (reg[rs1.to_ulong()] < x_imm){
+              reg[rd.to_ulong()] = 1;
+            }
+            else{reg[rd.to_ulong()] = 0;}
+            cout << "PSEUDO slti R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
+            cout << reg[rd.to_ulong()] << endl;
+        break;
+        case 0b110: //ORI
+            reg[rd.to_ulong()] = reg[rs1.to_ulong()] | x_imm;
+            cout << "PSEUDO ori R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
+            cout << reg[rd.to_ulong()] << endl;
+        break;
+        case 0b111: //ANDI
+            reg[rd.to_ulong()] = reg[rs1.to_ulong()] & x_imm;
+            cout << "PSEUDO andi R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
+            cout << reg[rd.to_ulong()] << endl;
+        break;
         default:
             cout << "error";
         break;

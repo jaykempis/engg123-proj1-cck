@@ -80,6 +80,15 @@ void opI(unsigned rawLine, long long int R[]){
           " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
             cout << R[rd.to_ulong()] << endl;
         break;
+        case 0b010: //SLTI
+            if (R[rs1.to_ulong()] < x_imm){
+              R[rd.to_ulong()] = 1;
+            }
+            else{R[rd.to_ulong()] = 0;}
+            cout << "PSEUDO slti R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
         case 0b110: //OR I
             R[rd.to_ulong()] = R[rs1.to_ulong()] | x_imm;
             cout << "PSEUDO ori R" << rd.to_ulong() <<
