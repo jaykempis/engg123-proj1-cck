@@ -68,7 +68,8 @@ void opI(unsigned rawLine, long long int R[]){
   //converting signed 12-bit to long
     int16_t x_imm = (int16_t)(imm.to_ulong() & 0xFFF) << 4; //interprets the unsigned 12-bit bitset into a signed
     x_imm = x_imm >> 4;                                     //16-bit set then converts it from bitset to long
-    //bitset<12> test_imm(x_imm);                             //the long is currently 16 bits long therefore we shift-right
+    cout << "x_imm: " << x_imm << endl;     
+    bitset<5> shift_imm(x_imm);                             //the long is currently 16 bits long therefore we shift-right
     //cout << test_imm.to_string() << endl;                   //to extract the signed 12-bit from the signed 16-bit
 
     //sample orperation
@@ -80,6 +81,7 @@ void opI(unsigned rawLine, long long int R[]){
           " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
             cout << R[rd.to_ulong()] << endl;
         break;
+        
         case 0b010: //SLTI
             if (R[rs1.to_ulong()] < x_imm){
               R[rd.to_ulong()] = 1;
@@ -89,18 +91,37 @@ void opI(unsigned rawLine, long long int R[]){
           " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
             cout << R[rd.to_ulong()] << endl;
         break;
+        
         case 0b110: //OR I
             R[rd.to_ulong()] = R[rs1.to_ulong()] | x_imm;
             cout << "PSEUDO ori R" << rd.to_ulong() <<
           " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
             cout << R[rd.to_ulong()] << endl;
         break;
+        
         case 0b11: //AND I
             R[rd.to_ulong()] = R[rs1.to_ulong()] & x_imm;
             cout << "PSEUDO andi R" << rd.to_ulong() <<
           " , R" <<rs1.to_ulong() << " , " << x_imm << "   |   R" << rd.to_ulong() << ": ";
             cout << R[rd.to_ulong()] << endl;
         break;
+        
+        case 0b001: //SHIFT LOGICAL LEFT IMMIDIATE
+            cout << "Shift: " << shift_imm.to_string() << endl; //use only lower 5 bits of imm
+            R[rd.to_ulong()] = R[rs1.to_ulong()] << shift_imm.to_ulong();
+            cout << "PSEUDO slli R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , " << shift_imm << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
+
+        case 0b101: //SHIFT LOGICAL RIGHT IMMIDIATE
+            cout << "Shift: " << shift_imm.to_string() << endl; //use only lower 5 bits of imm
+            R[rd.to_ulong()] = R[rs1.to_ulong()] >> shift_imm.to_ulong();
+            cout << "PSEUDO srli R" << rd.to_ulong() <<
+          " , R" <<rs1.to_ulong() << " , " << shift_imm << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
+        
         default:
             cout << "error";
         break;
