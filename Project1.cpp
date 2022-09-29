@@ -1,6 +1,3 @@
-//ENGG 123.01
-//Project 1: Interactive Basic RISC V Simulator
-//by: Iris Carson, Antonio Castro, and Joshua Kempis
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -99,8 +96,22 @@ void opR(unsigned rawline){
             cout << R[rd.to_ulong()] << endl;
         break;
 
+        case 0b001:
+          R[rd.to_ulong()] = R[rs1.to_ulong()] << rs2.to_ulong();
+          cout << "PSEUDO Shift Left Logical sll R" << rd.to_ulong() <<
+          " , R" << rs1.to_ulong() << " , x" << rs2.to_ulong() << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
+
+        case 0b101:
+          R[rd.to_ulong()] = R[rs1.to_ulong()] >> rs2.to_ulong();
+          cout << "PSEUDO Shift Right Logical srl R" << rd.to_ulong() <<
+          " , R" << rs1.to_ulong() << " , x" << rs2.to_ulong() << "   |   R" << rd.to_ulong() << ": ";
+            cout << R[rd.to_ulong()] << endl;
+        break;
+
         default:
-            cout << "error";
+            cout << "ERROR: Instruction Not Found in Library.";
         break;
     }
 
@@ -162,12 +173,12 @@ int main()
       ss >> raw32;
 
       bitset<32> b(raw32); //raw 32-bit line
-      cout << b.to_string() << endl; //output raw32
+      cout << "Instruction: " << b.to_string() << endl; //output raw32
 
       //extraction
       unsigned opcode = raw32 & 0x0000007F; //extracted OP-code
       bitset<7> op(opcode);
-      cout << op.to_string() << endl;
+      cout << "OP Code: " << op.to_string() << endl;
 
       switch(op.to_ulong()){
          case 0b0110011:
